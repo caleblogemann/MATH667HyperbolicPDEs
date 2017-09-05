@@ -137,6 +137,19 @@ Homework 1
   \item % #3
     For Burger's equation Riemann problem $u(x, 0) = $
 
-  \item % #4
+  \item % #4 Done
+    I implemented a Forward Euler Upwind method in the following \MATLAB{} function.
+    \lstinputlisting[language=MATLAB]{upwind.m}
+    The following script uses the previous function to simulate a square wave
+    propagating with periodic boundary conditions.
+    \lstinputlisting[language=MATLAB]{H01.m}
+    The following image is produced.
+    Note that as time increases the solution decays more and more from the exact solution
+    which is a perfect square wave.
+    \begin{center}
+      \includegraphics[scale=.8]{Figures/01_02.png}
+    \end{center}
+
+
 \end{enumerate}
 \end{document}
