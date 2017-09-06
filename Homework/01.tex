@@ -135,7 +135,93 @@ Homework 1
     \end{center}
 
   \item % #3
-    For Burger's equation Riemann problem $u(x, 0) = $
+    For Burger's equation Riemann problem
+    \[
+      u(x, 0) =
+      \begin{cases}
+        u_l & x \le 0 \\
+        u_r & x > 0
+      \end{cases}
+    \]
+    with $u_l < u_r$, show that
+    \[
+      u(x, t) =
+      \begin{cases}
+        u_l & x < s_m t \\
+        u_m & s_m t \le x \le u_m t \\
+        \frac{x}{t} & u_m t \le x \le u_r t \\
+        u_r & u_r t \le x
+      \end{cases}
+    \]
+    is a weak solution.
+    Let $u_l < u_m < u_r$ and $s_m = (u_l + u_r)/2$.
+    Sketch the characteristics for this solution.
+
+    Weak solutions of Burger's equation satisfy the following
+    \[
+      \dintt{0}{\infty}{\dintt{-\infty}{\infty}{u \phi_t + \frac{1}{2} u^2 \phi_x}{x}}{t} = -\dintt{-\infty}{\infty}{u(x, 0)\phi(x, 0)}{x}
+    \]
+    for all test functions $\phi \in C^{1}_0(\RR^2 \times \RR^+)$.
+    I will consider the integral equation in three parts.
+    First consider
+    \[
+      \dintt{0}{\infty}{\dintt{-\infty}{\infty}{u \phi_t}{x}}{t}
+    \]
+    This can be simplified by integrating by parts and substituting in for $u$.
+    \begin{align*}
+      \dintt{0}{\infty}{\dintt{-\infty}{\infty}{u \phi_t}{x}}{t} &= \dintt{-\infty}{\infty}{\dintt{0}{\infty}{u \phi_t}{t}}{x} \\
+      &= \dintt{-\infty}{\infty}{\eval{u \phi}{t = 0}{\infty} - \dintt{0}{\infty}{u_t \phi}{t}}{x} \\
+      \intertext{Since $\phi$ has compact support, $\eval{\phi}{t = \infty}{} = 0$}
+      &= \dintt{-\infty}{\infty}{u(x, 0) \phi(x,0)}{x} - \dintt{-\infty}{\infty}{\dintt{0}{\infty}{u_t \phi}{t}}{x} \\
+    \end{align*}
+    Now I will just consider
+    \[
+      \dintt{-\infty}{\infty}{\dintt{0}{\infty}{u_t \phi}{t}}{x}
+    \]
+    This integral can be broken down in several different ways depending on the values of $u_l$, $u_m$, and $u_r$.
+    There are in fact four different cases, shown below.
+    \pagebreak
+    \begin{center}
+      \includegraphics[scale=.31]{Figures/01_03.pdf} \\
+      \includegraphics[scale=.31]{Figures/01_04.pdf} \\
+      \includegraphics[scale=.31]{Figures/01_05.pdf} \\
+      \includegraphics[scale=.31]{Figures/01_06.pdf}
+    \end{center}
+    \pagebreak
+
+    I will only consider the case where $s_m > 0$, this implies that $0 < u_m < u_r$.
+    $u_l$ may be positive or negative but it is large enough that $s_m > 0$.
+    The other cases are roughly equivalent and would be redundant to fully write up.
+    In this case we can revisit the previous integral split it up into left and
+    right quadrants as follows.
+    \begin{align*}
+      \dintt{-\infty}{\infty}{\dintt{0}{\infty}{u_t \phi}{t}}{x} &= \dintt{-\infty}{0}{\dintt{0}{\infty}{\pda{u_l}{t} \phi}{t}}{x} + \dintt{0}{\infty}{\dintt{0}{\infty}{u_t \phi}{t}}{x} \\
+      &= \dintt{-\infty}{0}{\dintt{0}{\infty}{0 \times \phi}{t}}{x} + \dintt{0}{\infty}{\dintt{0}{\infty}{u_t \phi}{t}}{x} \\
+      &= \dintt{0}{\infty}{\dintt{0}{\infty}{u_t \phi}{t}}{x}
+    \end{align*}
+    Now the right quadrant can be split up into four sections based on time
+    \begin{align*}
+      &= \dintt*{0}{\infty}{\dintt{0}{x/u_r}{\pda{u_r}{t} \phi}{t} + \dintt{x/u_r}{x/u_m}{\pda{\frac{x}{t}}{t} \phi}{t} + \dintt{x/u_m}{x/s_m}{\pda{u_m}{t} \phi}{t} + \dintt{x/s_m}{\infty}{\pda{u_l}{t} \phi}{t}}{x} \\
+      &= \dintt*{0}{\infty}{\dintt{0}{x/u_r}{0 \times \phi}{t} + \dintt{x/u_r}{x/u_m}{-\frac{x}{t^2} \phi}{t} + \dintt{x/u_m}{x/s_m}{0 \times \phi}{t} + \dintt{x/s_m}{\infty}{0 \times \phi}{t}}{x} \\
+      &= \dintt{0}{\infty}{\dintt{x/u_r}{x/u_m}{-\frac{x}{t^2} \phi}{t}}{x}
+    \end{align*}
+
+    Next I will consider the term with the partial derivative in $x$.
+    \[
+      \dintt{0}{\infty}{\dintt{-\infty}{\infty}{\frac{1}{2}u^2 \phi_x}{x}}{t}
+    \]
+    Again this can be simplified by integrating by parts and substituting in for $u$.
+    \begin{gather*}
+      \dintt{0}{\infty}{\dintt{-\infty}{\infty}{\frac{1}{2}u^2 \phi_x}{x}}{t} = \dintt{0}{\infty}{\eval{\frac{1}{2}u^2 \phi}{x = -\infty}{\infty} - \dintt{-\infty}{\infty}{u u_x \phi}{x}}{t}
+    \end{gather*}
+    Since $\phi$ has compact support $\phi(\infty, t) = \phi(-\infty, t) = 0$
+    \begin{align*}
+      &= \dintt{0}{\infty}{0 - \dintt{-\infty}{\infty}{u u_x \phi}{x}}{t} \\
+      &= -\dintt*{0}{\infty}{\dintt{-\infty}{s_m t}{u_l \pda{u_l}{x} \phi}{x} + \dintt{s_m t}{u_m t}{u_m \pda{u_m}{x} \phi}{x} + \dintt{u_m t}{u_r t}{\frac{x}{t} \pda{\frac{x}{t}}{x} \phi}{x} + \dintt{u_r t }{\infty}{u_r \pda{u_r}{x} \phi}{x}}{t} \\
+      &= -\dintt*{0}{\infty}{\dintt{-\infty}{s_m t}{u_l \times 0 \times \phi}{x} + \dintt{s_m t}{u_m t}{u_m \times 0 \times \phi}{x} + \dintt{u_m t}{u_r t}{\frac{x}{t} \frac{1}{t} \phi}{x} + \dintt{u_r t }{\infty}{u_r \times 0 \times  \phi}{x}}{t} \\
+      &= -\dintt{0}{\infty}{\dintt{u_m t}{u_r t}{\frac{x}{t^2} \phi}{x}}{t}
+    \end{align*}
+
 
   \item % #4 Done
     I implemented a Forward Euler Upwind method in the following \MATLAB{} function.
