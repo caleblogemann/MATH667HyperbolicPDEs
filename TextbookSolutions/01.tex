@@ -1,0 +1,59 @@
+\documentclass[11pt, oneside]{article}
+\usepackage[letterpaper, margin=2cm]{geometry}
+\usepackage{Logemann}
+\usepackage{Integral}
+\usepackage{xspace}
+\newcommand{\MATLAB}{\textsc{Matlab}\xspace}
+\newcommand{\PYTHON}{\textsc{Python}\xspace}
+
+\begin{document}
+\noindent \textbf{\Large{Caleb Logemann \\
+Numerical Method for Conservation Laws \\
+Solutions
+}}
+
+%\lstinputlisting[language=Python]{H01_23.m}
+\section*{Chapter 3}
+\begin{enumerate}
+  \item[3.1] % Done
+    Let $f(u) = au$, with $a$ constant, and let $u_0(x)$ be any integrable
+    function.
+    Verify that the function $u(x, t) = u_0(x - at)$ satisfies the integral
+    form (2.16) for any $x_1$, $x_2$, $t_1$, and $t_2$.
+
+    The integral form of the conservation law (2.16) is
+    \[
+      \dintt{x_1}{x_2}{u(x,t_2)}{x} = \dintt{x_1}{x_2}{u(x,t_1)}{x} 
+        + \dintt{t_1}{t_2}{f(u(x_1,t))}{t} - \dintt{t_1}{t_2}{f(u(x_2,t))}{t}
+    \]
+    This can be verified for the exact solution $u_0(x - at)$.
+    Since $u_0(x)$ is integrable let $U_0(x) = \dintt{a}{x}{u(x)}{x}$.
+    \begin{align*}
+      \dintt{x_1}{x_2}{u(x,t_2)}{x} &= \dintt{x_1}{x_2}{u(x,t_1)}{x} 
+        + \dintt{t_1}{t_2}{f(u(x_1,t))}{t} - \dintt{t_1}{t_2}{f(u(x_2,t))}{t} \\
+      \dintt{x_1}{x_2}{u_0(x - at_2)}{x} &= \dintt{x_1}{x_2}{u_0(x - at_1)}{x} 
+        + \dintt{t_1}{t_2}{au_0(x_1 - at)}{t} - \dintt{t_1}{t_2}{au_0(x_2 - at)}{t} \\
+      \intertext{By the fundamental Theorem of Calculus}
+      U_0(x_2 - at_2) - U_0(x_1 - at_2) &= U_0(x_2 - at_1) - U_0(x_1 - at_1)
+        + \frac{a}{-a} U_0(x_1 - at_2) - \frac{a}{-a}U_0(x_1 - at_1) \\
+        &- \frac{a}{-a}U_0(x_2 - at_2) + \frac{a}{-a} U_0(x_2 - at_1) \\
+      U_0(x_2 - at_2) - U_0(x_1 - at_2) &= U_0(x_2 - at_1) - U_0(x_1 - at_1)
+        - U_0(x_1 - at_2) + U_0(x_1 - at_1) \\
+        &+ \frac{a}{a}U_0(x_2 - at_2) - \frac{a}{a} U_0(x_2 - at_1) \\
+       0 &= U_0(x_2 - at_1) - U_0(x_1 - at_1) + U_0(x_1 - at_1) - U_0(x_2 - at_1) \\
+       0 &= 0
+    \end{align*}
+    This verifies that $u_0(x - at)$ satisfies the integral form of the
+    conservation law when $u_0$ is integrable.
+
+  \item[3.2]
+    Show that the vanishing viscosity solution for the advection-diffusion
+    equation $\lim[\epsilon \to 0]{u^{\epsilon}(x, t)}$ is equal to
+    $u_0(x - at)$.
+
+  \item[3.3]
+
+
+
+\end{enumerate}
+\end{document}
