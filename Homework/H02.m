@@ -20,8 +20,8 @@ t2 = 2/deltaT;
 t5 = nTimeSteps;
 
 uExactSol2 = arrayfun(@(xj) uExactFunc(xj, 2), x);
-plot(x, upwindSol(t2+1,:), 'k--', x, laxFriedrichsSol(t2+1,:), 'k+', ...
-    x,  laxWendroffSol(t2+1,:), 'ko', x, uExactSol2, 'k-');
+plot(x, upwindSol(t2+1,:), 'k--', x, laxFriedrichsSol(t2+1,:), 'k:', ...
+    x,  laxWendroffSol(t2+1,:), 'k-.', x, uExactSol2, 'k-','LineWidth',2);
 xlabel('x');
 ylabel('u');
 title('T = 2');
@@ -29,11 +29,10 @@ legend('Upwind', 'Lax Friedrichs', 'Lax Wendroff', 'Exact');
 saveas(gcf, 'Figures/02_01.png', 'png');
 
 uExactSol5 = arrayfun(@(xj) uExactFunc(xj, 5), x);
-plot(x, upwindSol(t5+1,:), 'k--', x, laxFriedrichsSol(t5+1,:), 'k+', ...
-    x, laxWendroffSol(t5+1,:), 'ko', x, uExactSol5, 'k-');
+plot(x, upwindSol(t5+1,:), 'k--', x, laxFriedrichsSol(t5+1,:), 'k:', ...
+    x, laxWendroffSol(t5+1,:), 'k-.', x, uExactSol5, 'k-','LineWidth',2);
 xlabel('x');
 ylabel('u');
 title('T = 5');
 legend('Upwind', 'Lax Friedrichs', 'Lax Wendroff', 'Exact');
 saveas(gcf, 'Figures/02_02.png', 'png');
-
