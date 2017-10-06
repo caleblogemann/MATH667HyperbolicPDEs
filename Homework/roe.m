@@ -6,7 +6,7 @@ function [u] = roe(f, u0, deltaT, deltaX, nTimeSteps)
 
     % flux array, F(i) is flux at i - 1/2 interface
     % periodic boundary conditions F(nGridCells + 1) = F(1), so F(nGridCells + 1) not necessary
-    F = zeros(nGridCells);
+    F = zeros(nGridCells,1);
 
     for n = 1:nTimeSteps
         % compute fluxes at boundaries
@@ -28,7 +28,7 @@ function [u] = roe(f, u0, deltaT, deltaX, nTimeSteps)
 
         % update solution
         for j = 1:nGridCells
-            % periodic boundary conditions
+            % zero flux boundary conditions
             jp1 = j+1;
             if (j == nGridCells)
                 jp1 = nGridCells;
