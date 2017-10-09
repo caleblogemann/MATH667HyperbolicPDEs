@@ -18,7 +18,17 @@ function [u] = laxWendroff(f, df, u0, deltaT, deltaX, nTimeSteps)
             end
 
             % update
-            u(n+1, j) = u(n, j) - a*(f(u(n,jp1)) - f(u(n,jm1))) + b*(df(0.5*(u(n,j) + u(n,jp1)))*(f(u(n,jp1)) - f(u(n,j))) - df(0.5*(u(n,j) + u(n,jm1)))*(f(u(n,j)) - f(u(n,jm1))));
+            % traditional laxWendroff
+            %Ap = df(0.5*(u(n, j) + u(n, jp1)));
+            %Am = df(0.5*(u(n, j) + u(n, jm1)));
+            %fc = f(u(n,jp1)) - f(u(n,jm1));
+            %fl = f(u(n,j)) - f(u(n,jm1));
+            %fr = f(u(n,jp1)) - f(u(n,j));
+            %u(n+1, j) = u(n, j) - a*fc + b*(Ap*fr - Am*fl);
+            
+            % MacCormack's Method
+            ustar
+
         end
     end
 end
