@@ -28,7 +28,7 @@ function [u] = roe(f, u0, deltaT, deltaX, nTimeSteps)
 
         % update solution
         for j = 1:nGridCells
-            % zero flux boundary conditions
+            % zero flux boundaryH03 conditions
             jp1 = j+1;
             if (j == nGridCells)
                 jp1 = nGridCells;
