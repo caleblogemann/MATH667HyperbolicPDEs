@@ -40,7 +40,7 @@ with the following Riemann initial data sets.
     \]
 \end{enumerate}
 \begin{enumerate}
-  \item % #1
+  \item % #1 Done
     Determine the exact solutions for all $t > 0$.
     \begin{enumerate}
       \item[(a)]
@@ -72,6 +72,31 @@ with the following Riemann initial data sets.
         \]
     \end{enumerate}
 
-  \item % #2
+  \item % #2 Done
+    The following function implement the Roe scheme, the Lax-Friedrichs scheme,
+    and both the standard and Richtmyer versions of the Lax-Wendroff method.
+    I implemented both the standard Lax-Wendroff and the Richtmyer methods
+    because the Lax-Wendroff method was giving me the wrong weak solution, while
+    the Richtmyer was giving me the entropy solution in the rarefaction case.
+    \lstinputlisting[language=MATLAB]{roe.m}
+    \lstinputlisting[language=MATLAB]{laxFriedrichs.m}
+    \lstinputlisting[language=MATLAB]{laxWendroff.m}
+    \lstinputlisting[language=MATLAB]{richtmyer.m}
+
+    The following script uses these functions to solve the Burgers equation for
+    the shock and rarefaction case.
+    The following images are produced.
+    All of these images are zoomed in to the area of interest.
+    Note that in rarefaction case the Richtmyer Lax-Wendroff method produces
+    just a rarefaction were the standard Lax-Wendroff produces a shock and
+    rarefaction.
+    Also the oscillations in the Lax-Wendroff method cause this shock to be out
+    of proportion.
+    \begin{center}
+      \includegraphics[scale=0.5]{Figures/03_01.png}
+      \includegraphics[scale=0.5]{Figures/03_02.png}
+      \includegraphics[scale=0.5]{Figures/03_03.png}
+    \end{center}
+
 \end{enumerate}
 \end{document}
