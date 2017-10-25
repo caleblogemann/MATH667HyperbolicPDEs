@@ -1,0 +1,138 @@
+\documentclass[11pt, oneside]{article}
+\usepackage[letterpaper, margin=2cm]{geometry}
+\usepackage{MATH667}
+
+\begin{document}
+\noindent \textbf{\Large{Caleb Logemann \\
+MATH667 Hyperbolic Partial Differential Equations \\
+Homework 5
+}}
+
+%\lstinputlisting[language=MATLAB]{H01_23.m}
+\begin{enumerate}
+  \item % #1
+    For the following schemes to solve nonlinear conservation laws, show which
+    ones are monotone schemes.
+    \begin{itemize}
+      \item Godunov scheme
+
+
+      \item Lax-Friedrichs scheme \hfill \\ % Done 
+        The Lax-Friedrichs scheme is monotone if the CFL condition is meet.
+        To see this note that the Lax-Friedrichs method can be written as
+        $U^{n+1}_j = H(U^n_{j-1}, U^n_j, U^n_{j-1})$ where
+        \[
+          H(U_{j-1}, U_j, U_{j+1}) = \p{1 - \frac{\alpha \Delta t}{\Delta x}} U_j 
+          + \frac{\alpha \Delta t}{2 \Delta x} \p{U_{j+1} + U_{j-1}} 
+          - \frac{\Delta t}{2 \Delta x} \p{f(U_{j+1}) - f(U_{j-1})}
+        \]
+        and $\alpha = \max[u]{\abs{f'(u)}}$
+        To show that this method is monotone, we need to show that
+        $\pd{H}{U_i} \ge 0$ for $i = j-1, j, j+1$.
+
+        First consider $\pd{H}{U_j}$.
+        \begin{align*}
+          \pd{H}{U_j} &= \p{1 - \frac{\alpha \Delta t}{\Delta x}} \\
+          \p{1 - \frac{\alpha \Delta t}{\Delta x}} &\ge 0 \\
+          1 &\ge \frac{\alpha \Delta t}{\Delta x} \\
+        \end{align*}
+        This is exactly the CFL condition, so this condition is satisfied by this method.
+
+        Second consider $\pd{H}{U_{j-1}}$.
+        \begin{align*}
+          \pd{H}{U_{j-1}} &= \frac{\alpha \Delta t}{2 \Delta x} + \frac{\Delta t}{2 \Delta x} f'(U_{j-1}) \\
+          &= \frac{\Delta t}{2 \Delta x}\p{\alpha + f'(U_{j-1})}
+          \intertext{Since $\alpha = \max[u]{\abs{f'(u)}} \ge f'(U_{j-1})$, then
+            $\p{\alpha + f'(U_{j-1})} \ge 0$ and}
+          \pd{H}{U_{j-1}} &\ge 0
+        \end{align*}
+
+        Finally consider $\pd{H}{U_{j+1}}$.
+        \begin{align*}
+          \pd{H}{U_{j+1}} &= \frac{\alpha \Delta t}{2 \Delta x} - \frac{\Delta t}{2 \Delta x} f'(U_{j+1}) \\
+          &= \frac{\Delta t}{2 \Delta x}\p{\alpha - f'(U_{j+1})}
+          \intertext{Since $\alpha = \max[u]{\abs{f'(u)}} \ge f'(U_{j-1})$, then
+            $\p{\alpha - f'(U_{j+1})} \ge 0$ and}
+          \pd{H}{U_{j+1}} &\ge 0
+        \end{align*}
+
+        These three conditions are met by the Lax-Friedrichs method, so the scheme is monotone.
+
+      \item Local Lax-Friedrichs scheme \hfill \\ % Done
+        The Local Lax-Friedrichs scheme is monotone if the CFL condition is meet.
+        To see this note that the Local Lax-Friedrichs method can be written as
+        $U^{n+1}_j = H(U^n_{j-1}, U^n_j, U^n_{j-1})$ where
+        \[
+          H(U_{j-1}, U_j, U_{j+1}) = \p{1 - \frac{\p{\alpha_+ + \alpha_-} \Delta t}{2\Delta x}} U_j
+          + \frac{\Delta t}{2 \Delta x} \p{\alpha_+ U_{j+1} + \alpha_- U_{j-1}} 
+          - \frac{\Delta t}{2 \Delta x} \p{f(U_{j+1}) - f(U_{j-1})}
+        \]
+        and $\alpha_+ = \max[\p{U_j, U_{j+1}}]{\abs{f'(u)}}$ and $\alpha_- = \max[\p{U_j, U_{j-1}}]{\abs{f'(u)}}$.
+        To show that this method is monotone, we need to show that
+        $\pd{H}{U_i} \ge 0$ for $i = j-1, j, j+1$.
+
+        First consider $\pd{H}{U_j}$.
+        \begin{align*}
+          \pd{H}{U_j} &= \p{1 - \frac{\p{\alpha_+ + \alpha_-} \Delta t}{2\Delta x}} \\
+          \p{1 - \frac{\p{\alpha_+ + \alpha_-} \Delta t}{2\Delta x}} &\ge 0 \\
+          1 &\ge \frac{\p{\alpha_+ + \alpha_-} \Delta t}{2\Delta x} \\
+        \end{align*}
+        Since $\alpha_+$ and $\alpha_-$ are both less than $\alpha$, this
+        condition is met if the CFL condition is met.
+
+        Second consider $\pd{H}{U_{j-1}}$.
+        \begin{align*}
+          \pd{H}{U_{j-1}} &= \frac{\alpha_- \Delta t}{2 \Delta x} + \frac{\Delta t}{2 \Delta x} f'(U_{j-1}) \\
+          &= \frac{\Delta t}{2 \Delta x}\p{\alpha_- + f'(U_{j-1})}
+          \intertext{Since $\alpha_- = \max[\br{U_{j-1}, U_j}]{\abs{f'(u)}} \ge f'(U_{j-1})$, then
+            $\p{\alpha_- + f'(U_{j-1})} \ge 0$ and}
+          \pd{H}{U_{j-1}} &\ge 0
+        \end{align*}
+
+        Finally consider $\pd{H}{U_{j+1}}$.
+        \begin{align*}
+          \pd{H}{U_{j+1}} &= \frac{\alpha_+ \Delta t}{2 \Delta x} - \frac{\Delta t}{2 \Delta x} f'(U_{j+1}) \\
+          &= \frac{\Delta t}{2 \Delta x}\p{\alpha_+ - f'(U_{j+1})}
+          \intertext{Since $\alpha = \max[\br{U_j, U_{j+1}}]{\abs{f'(u)}} \ge f'(U_{j-1})$, then
+            $\p{\alpha_+ - f'(U_{j+1})} \ge 0$ and}
+          \pd{H}{U_{j+1}} &\ge 0
+        \end{align*}
+
+        These three conditions are met by the Local Lax-Friedrichs method, so the scheme is monotone.
+
+      \item Lax-Wendroff scheme \hfill \\ % Done
+        The Lax-Wendroff scheme is not monotone.
+        This is obvious because the Lax-Wendroff scheme is second order and
+        monotone schemes must be first order at most.
+        Also Lax-Wendroff creates oscillations at shocks, which are clearly not
+        monotone.
+
+        To see this specifically, consider $f(u) = u$.
+        In this case,
+        \[
+          H(U_{j-1}, U_j, U_{j+1}) = U_j - \frac{\Delta t}{2\Delta x} \p{U_{j+1} - U_{j-1}}
+          + \frac{\Delta t^2}{2 \Delta x^2} \p{U_{j+1} - 2U_j + U_{j-1}}
+        \]
+        Now consider $\pd{H}{U_{j+1}}$
+        \begin{align*}
+          \pd{H}{U_{j+1}} &= -\frac{\Delta t}{2\Delta x} + \frac{\Delta t^2}{2 \Delta x^2} \\
+          &= \frac{\Delta t}{2\Delta x}\p{\frac{\Delta t}{\Delta x} - 1} \\
+          &\le 0 \\
+        \end{align*}
+        If the CFL condition is satisfied then
+        $\p{\frac{\Delta t}{\Delta x} - 1} \le 0$, so this partial
+        derivative is negative and the method is not monotone.
+    \end{itemize}
+
+  \item % #2
+    Solve Burger's equation $u_t + \p{\frac{u^2}{2}}_x = 0$ on
+    $x \in \br{0, 2\pi}$ with initial data $u(x, 0) = 1 + \frac{1}{2} \sin{x}$.
+    Let's consider the 1\textsuperscript{st} order finite difference Godunov scheme.
+    Implement the scheme to (a) $t = 1.0$ and (b) $t = 3.0$.
+    Apply periodic boundary conditions.
+    For part (a) output $L^{\infty}$ error/order table with uniform mesh
+    $N = 20, 40, 80, 160$.
+    For part (b) graph the simulation with $N = 80$ and solid line for exact
+    solution and symbols for numerical approximations.
+\end{enumerate}
+\end{document}
