@@ -4,6 +4,8 @@ function [u] = godunov(f, u0, deltaT, deltaX, nTimeSteps)
     u(1, :) = u0;
     nu = deltaT/deltaX;
 
+    boundaryConditions = 'periodic';
+
     % flux array, F(i) is flux at i - 1/2 interface
     F = zeros(nGridCells,1);
 
@@ -13,7 +15,11 @@ function [u] = godunov(f, u0, deltaT, deltaX, nTimeSteps)
             % zero flux boundary conditions
             jm1 = j-1;
             if (j == 1)
-                jm1 = 1;
+                if (strcmp(boundaryConditions,'periodic'))
+                    jm1 = nGridCells;
+                elseif (strcmp(boundaryConditions,'zeroFlux'))
+                    jm1 = 1;
+                end
             end
 
             ful = f(u(n,jm1));
@@ -37,7 +43,11 @@ function [u] = godunov(f, u0, deltaT, deltaX, nTimeSteps)
             % zero flux boundary conditions
             jp1 = j+1;
             if (j == nGridCells)
-                jp1 = nGridCells;
+                if (strcmp(boundaryConditions,'periodic'))
+                    jp1 = 1;
+                elseif (strcmp(boundaryConditions,'zeroFlux'))
+                    jp1 = nGridCells;
+                end
             end
 
             u(n+1, j) = u(n, j) + nu*(F(j) - F(jp1));
