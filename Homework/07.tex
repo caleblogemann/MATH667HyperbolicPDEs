@@ -22,8 +22,10 @@ Homework 7
       For this problem we would like to construct a quadractic polynomial $p(x)$
       such that $p$ matches the cell average on intervals $I_{j-1}$, $I_j$, and
       $I_{j+1}$.
-      This means that we need to set $p(x) = ax^2 + bx + c$ and solve the following set
-      of equations for $a$, $b$, and $c$.
+      If we set
+      $p(x) = a\p{x - x_{j+1/2}}^2 + b\p{x - x_{j-1/2}} + c$, then
+      $p(x_{j-1/2}) = c$.
+      We can then solve the following three equations for $c$.
       \begin{align*}
         \frac{1}{h} \dintt{x_{j-3/2}}{x_{j-1/2}}{p(x)}{x} &= \bar{u}_{j-1} \\
         \frac{1}{h} \dintt{x_{j-1/2}}{x_{j+1/2}}{p(x)}{x} &= \bar{u}_{j} \\
@@ -31,37 +33,119 @@ Homework 7
       \end{align*}
       These equation can be simplified as follows.
       \begin{align*}
-        \frac{1}{3h}a \p{x_{j-1/2}^3 - x_{j-3/2}^3} + \frac{1}{2h}b\p{x_{j-1/2}^2 - x_{j-3/2}^2} + c &= \bar{u}_{j-1} \\
-        \frac{1}{3h}a \p{x_{j+1/2}^3 - x_{j-1/2}^3} + \frac{1}{2h}b\p{x_{j+1/2}^2 - x_{j-1/2}^2} + c &= \bar{u}_{j} \\
-        \frac{1}{3h}a \p{x_{j+3/2}^3 - x_{j+1/2}^3} + \frac{1}{2h}b\p{x_{j+3/2}^2 - x_{j+1/2}^2} + c &= \bar{u}_{j+1}
-      \end{align*}
-      Factoring the difference of cubes and difference of squares and cancelling
-      $h$ gives
-      \begin{align*}
-        \frac{1}{3}a \p{x_{j-1/2}^2 + x_{j-1/2}x_{j-3/2} +  x_{j-3/2}^2} + \frac{1}{2}b\p{x_{j-1/2} + x_{j-3/2}} + c &= \bar{u}_{j-1} \\
-        \frac{1}{3}a \p{x_{j+1/2}^2 + x_{j+1/2}x_{j-1/2} +  x_{j-1/2}^2} + \frac{1}{2}b\p{x_{j+1/2} + x_{j-1/2}} + c &= \bar{u}_{j} \\
-        \frac{1}{3}a \p{x_{j+3/2}^2 + x_{j+3/2}x_{j+1/2} +  x_{j+1/2}^2} + \frac{1}{2}b\p{x_{j+3/2} + x_{j+1/2}} + c &= \bar{u}_{j+1}.
-      \end{align*}
-      Now I will substitute in so that all the x values are in terms of
-      $x_{j+1/2}$ and $h$, i.e. $x_{j-3/2} = x_{j+1/2} - 2h$,
-      $x_{j-1/2} = x_{j+1/2} - h$, etc.
-      \begin{align*}
-        \frac{1}{3}a \p{\p{x_{j+1/2} - h}^2 + \p{x_{j+1/2} - h}\p{x_{j+1/2} - 2h} +  \p{x_{j+1/2} - 2h}^2} + b\p{x_{j+1/2} - \frac{3}{2}h} + c &= \bar{u}_{j-1} \\
-        \frac{1}{3}a \p{x_{j+1/2}^2 + x_{j+1/2}\p{x_{j+1/2} - h} +  \p{x_{j+1/2} - h}^2} + b\p{x_{j+1/2} - \frac{1}{2}h} + c &= \bar{u}_{j} \\
-        \frac{1}{3}a \p{\p{x_{j+1/2} + h}^2 + \p{x_{j+1/2} + h}x_{j+1/2} +  x_{j+1/2}^2} + b\p{x_{j+1/2} + \frac{1}{2}h} + c &= \bar{u}_{j+1}.
+        \frac{1}{3h}a \p{-h^3 + 8h^3} + \frac{1}{2h}b\p{h^2 - 4h^2} + c &= \bar{u}_{j-1} \\
+        \frac{1}{3h}a \p{h^3} + \frac{1}{2h}b\p{-h^2} + c &= \bar{u}_{j} \\
+        \frac{1}{3h}a \p{h^3} + \frac{1}{2h}b\p{h^2} + c &= \bar{u}_{j+1}
       \end{align*}
       Simplifying gives
       \begin{align*}
-        \frac{1}{3}a \p{3x_{j+1/2}^2 - 9hx_{j+1/2} + 7h^2} + b\p{x_{j+1/2} - \frac{3}{2}h} + c &= \bar{u}_{j-1} \\
-        \frac{1}{3}a \p{3x_{j+1/2}^2 - 3hx_{j+1/2} + 1h^2} + b\p{x_{j+1/2} - \frac{1}{2}h} + c &= \bar{u}_{j} \\
-        \frac{1}{3}a \p{3x_{j+1/2}^2 + 3hx_{j+1/2} + 1h^2} + b\p{x_{j+1/2} + \frac{1}{2}h} + c &= \bar{u}_{j+1}.
+        \frac{7h^2}{3}a + \frac{3h}{2}b + c &= \bar{u}_{j-1} \\
+        \frac{h^2}{3}a - \frac{h}{2}b + c &= \bar{u}_{j} \\
+        \frac{h^2}{3}a + \frac{h}{2}b + c &= \bar{u}_{j+1}
       \end{align*}
-      Subtracting the last two equations gives
-      \[
-        2hx_{j+1/2}a - hb = \bar{u}_j - \bar{u}_{j+1}.
-      \]
-      Solving 
 
+      %\begin{align*}
+        %\frac{1}{3}a \p{x_{j-1/2}^2 + x_{j-1/2}x_{j-3/2} +  x_{j-3/2}^2} + \frac{1}{2}b\p{x_{j-1/2} + x_{j-3/2}} + c &= \bar{u}_{j-1} \\
+        %\frac{1}{3}a \p{x_{j+1/2}^2 + x_{j+1/2}x_{j-1/2} +  x_{j-1/2}^2} + \frac{1}{2}b\p{x_{j+1/2} + x_{j-1/2}} + c &= \bar{u}_{j} \\
+        %\frac{1}{3}a \p{x_{j+3/2}^2 + x_{j+3/2}x_{j+1/2} +  x_{j+1/2}^2} + \frac{1}{2}b\p{x_{j+3/2} + x_{j+1/2}} + c &= \bar{u}_{j+1}.
+      %\end{align*}
+      %Now I will substitute in so that all the x values are in terms of
+      %$x_{j+1/2}$ and $h$, i.e. $x_{j-3/2} = x_{j+1/2} - 2h$,
+      %$x_{j-1/2} = x_{j+1/2} - h$, etc.
+      %\begin{align*}
+        %\frac{1}{3}a \p{\p{x_{j+1/2} - h}^2 + \p{x_{j+1/2} - h}\p{x_{j+1/2} - 2h} +  \p{x_{j+1/2} - 2h}^2} + b\p{x_{j+1/2} - \frac{3}{2}h} + c &= \bar{u}_{j-1} \\
+        %\frac{1}{3}a \p{x_{j+1/2}^2 + x_{j+1/2}\p{x_{j+1/2} - h} +  \p{x_{j+1/2} - h}^2} + b\p{x_{j+1/2} - \frac{1}{2}h} + c &= \bar{u}_{j} \\
+        %\frac{1}{3}a \p{\p{x_{j+1/2} + h}^2 + \p{x_{j+1/2} + h}x_{j+1/2} +  x_{j+1/2}^2} + b\p{x_{j+1/2} + \frac{1}{2}h} + c &= \bar{u}_{j+1}.
+      %\end{align*}
+      %Simplifying gives
+      %\begin{align*}
+        %\frac{1}{3}a \p{3x_{j+1/2}^2 - 9hx_{j+1/2} + 7h^2} + b\p{x_{j+1/2} - \frac{3}{2}h} + c &= \bar{u}_{j-1} \\
+        %\frac{1}{3}a \p{3x_{j+1/2}^2 - 3hx_{j+1/2} + 1h^2} + b\p{x_{j+1/2} - \frac{1}{2}h} + c &= \bar{u}_{j} \\
+        %\frac{1}{3}a \p{3x_{j+1/2}^2 + 3hx_{j+1/2} + 1h^2} + b\p{x_{j+1/2} + \frac{1}{2}h} + c &= \bar{u}_{j+1}.
+      %\end{align*}
+      %Subtracting the last two equations and the first two equations,
+      %\begin{align*}
+        %-2hx_{j+1/2}a - hb &= \bar{u}_j - \bar{u}_{j+1} \\
+        %\p{-2hx_{j+1/2} + 2h^2}a - hb &= \bar{u}_{j-1} - \bar{u}_{j}.
+      %\end{align*}
+      %Subtracting these two equations gives
+      %\[
+        %-2h^2a = -\bar{u}_{j-1} + 2\bar{u}_j - \bar{u}_{j+1}
+      %\]
+      %Solving for $a$ gives
+      %\[
+        %a = \frac{\bar{u}_{j-1} - 2\bar{u}_j + \bar{u}_{j+1}}{2h^2}
+      %\]
+      %Plugging in to the equation of $a$ and $b$, to solve for $b$ gives
+      %\[
+        %x_{j+1/2}\frac{-\bar{u}_{j-1} + 2\bar{u}_j - \bar{u}_{j+1}}{h} - hb = \bar{u}_j - \bar{u}_{j+1}
+      %\]
+      %Solving for $b$ gives
+      %\[
+        %b = \frac{\bar{u}_{j+1} - \bar{u}_j}{h} + x_{j+1/2}\frac{-\bar{u}_{j-1} + 2\bar{u}_j - \bar{u}_{j+1}}{h^2}
+      %\]
+      %Now that we have $a$ and $b$ we can solve for $c$.
+      %\begin{align*}
+        %\frac{1}{3}a \p{3x_{j+1/2}^2 - 3hx_{j+1/2} + 1h^2} + b\p{x_{j+1/2} - \frac{1}{2}h} + c &= \bar{u}_{j} \\
+      %\end{align*}
+      %\begin{align*}
+        %\frac{1}{h} \dintt{x_{j-3/2}}{x_{j-1/2}}{p(x)}{x} &= \bar{u}_{j-1} \\
+        %\frac{1}{h} \dintt{x_{j-1/2}}{x_{j+1/2}}{p(x)}{x} &= \bar{u}_{j} \\
+        %\frac{1}{h} \dintt{x_{j+1/2}}{x_{j+3/2}}{p(x)}{x} &= \bar{u}_{j+1}
+      %\end{align*}
+      %These equation can be simplified as follows.
+      %\begin{align*}
+        %\frac{1}{3h}a \p{x_{j-1/2}^3 - x_{j-3/2}^3} + \frac{1}{2h}b\p{x_{j-1/2}^2 - x_{j-3/2}^2} + c &= \bar{u}_{j-1} \\
+        %\frac{1}{3h}a \p{x_{j+1/2}^3 - x_{j-1/2}^3} + \frac{1}{2h}b\p{x_{j+1/2}^2 - x_{j-1/2}^2} + c &= \bar{u}_{j} \\
+        %\frac{1}{3h}a \p{x_{j+3/2}^3 - x_{j+1/2}^3} + \frac{1}{2h}b\p{x_{j+3/2}^2 - x_{j+1/2}^2} + c &= \bar{u}_{j+1}
+      %\end{align*}
+      %Factoring the difference of cubes and difference of squares and cancelling
+      %$h$ gives
+      %\begin{align*}
+        %\frac{1}{3}a \p{x_{j-1/2}^2 + x_{j-1/2}x_{j-3/2} +  x_{j-3/2}^2} + \frac{1}{2}b\p{x_{j-1/2} + x_{j-3/2}} + c &= \bar{u}_{j-1} \\
+        %\frac{1}{3}a \p{x_{j+1/2}^2 + x_{j+1/2}x_{j-1/2} +  x_{j-1/2}^2} + \frac{1}{2}b\p{x_{j+1/2} + x_{j-1/2}} + c &= \bar{u}_{j} \\
+        %\frac{1}{3}a \p{x_{j+3/2}^2 + x_{j+3/2}x_{j+1/2} +  x_{j+1/2}^2} + \frac{1}{2}b\p{x_{j+3/2} + x_{j+1/2}} + c &= \bar{u}_{j+1}.
+      %\end{align*}
+      %Now I will substitute in so that all the x values are in terms of
+      %$x_{j+1/2}$ and $h$, i.e. $x_{j-3/2} = x_{j+1/2} - 2h$,
+      %$x_{j-1/2} = x_{j+1/2} - h$, etc.
+      %\begin{align*}
+        %\frac{1}{3}a \p{\p{x_{j+1/2} - h}^2 + \p{x_{j+1/2} - h}\p{x_{j+1/2} - 2h} +  \p{x_{j+1/2} - 2h}^2} + b\p{x_{j+1/2} - \frac{3}{2}h} + c &= \bar{u}_{j-1} \\
+        %\frac{1}{3}a \p{x_{j+1/2}^2 + x_{j+1/2}\p{x_{j+1/2} - h} +  \p{x_{j+1/2} - h}^2} + b\p{x_{j+1/2} - \frac{1}{2}h} + c &= \bar{u}_{j} \\
+        %\frac{1}{3}a \p{\p{x_{j+1/2} + h}^2 + \p{x_{j+1/2} + h}x_{j+1/2} +  x_{j+1/2}^2} + b\p{x_{j+1/2} + \frac{1}{2}h} + c &= \bar{u}_{j+1}.
+      %\end{align*}
+      %Simplifying gives
+      %\begin{align*}
+        %\frac{1}{3}a \p{3x_{j+1/2}^2 - 9hx_{j+1/2} + 7h^2} + b\p{x_{j+1/2} - \frac{3}{2}h} + c &= \bar{u}_{j-1} \\
+        %\frac{1}{3}a \p{3x_{j+1/2}^2 - 3hx_{j+1/2} + 1h^2} + b\p{x_{j+1/2} - \frac{1}{2}h} + c &= \bar{u}_{j} \\
+        %\frac{1}{3}a \p{3x_{j+1/2}^2 + 3hx_{j+1/2} + 1h^2} + b\p{x_{j+1/2} + \frac{1}{2}h} + c &= \bar{u}_{j+1}.
+      %\end{align*}
+      %Subtracting the last two equations and the first two equations,
+      %\begin{align*}
+        %-2hx_{j+1/2}a - hb &= \bar{u}_j - \bar{u}_{j+1} \\
+        %\p{-2hx_{j+1/2} + 2h^2}a - hb &= \bar{u}_{j-1} - \bar{u}_{j}.
+      %\end{align*}
+      %Subtracting these two equations gives
+      %\[
+        %-2h^2a = -\bar{u}_{j-1} + 2\bar{u}_j - \bar{u}_{j+1}
+      %\]
+      %Solving for $a$ gives
+      %\[
+        %a = \frac{\bar{u}_{j-1} - 2\bar{u}_j + \bar{u}_{j+1}}{2h^2}
+      %\]
+      %Plugging in to the equation of $a$ and $b$, to solve for $b$ gives
+      %\[
+        %x_{j+1/2}\frac{-\bar{u}_{j-1} + 2\bar{u}_j - \bar{u}_{j+1}}{h} - hb = \bar{u}_j - \bar{u}_{j+1}
+      %\]
+      %Solving for $b$ gives
+      %\[
+        %b = \frac{\bar{u}_{j+1} - \bar{u}_j}{h} + x_{j+1/2}\frac{-\bar{u}_{j-1} + 2\bar{u}_j - \bar{u}_{j+1}}{h^2}
+      %\]
+      %Now that we have $a$ and $b$ we can solve for $c$.
+      %\begin{align*}
+        %\frac{1}{3}a \p{3x_{j+1/2}^2 - 3hx_{j+1/2} + 1h^2} + b\p{x_{j+1/2} - \frac{1}{2}h} + c &= \bar{u}_{j} \\
+      %\end{align*}
+      
 
 
     \item % #2
