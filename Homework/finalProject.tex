@@ -1,0 +1,119 @@
+\documentclass[11pt, oneside]{article}
+\usepackage[letterpaper, margin=2cm]{geometry}
+\usepackage{MATH667}
+\usepackage{booktabs}
+\newcommand{\doubletilde}[1]{\tilde{\tilde{#1}}}
+
+\begin{document}
+\noindent \textbf{\Large{Caleb Logemann \\
+MATH667 Hyperbolic Partial Differential Equations \\
+Final Project
+}}
+
+%\lstinputlisting[language=MATLAB]{H01_23.m}
+\begin{enumerate}
+  \item % #1
+    Write out the Jacobian matrix and derive the eigenvalues and eigenvectors
+    for the Euler equations.
+
+    We have the following vector flux function written in terms of the conserved variables.
+    \[
+      \v{f}(\v{u}) =
+      \begin{bmatrix}
+        m \\
+        \frac{m^2}{\rho} + P \\
+        \frac{m}{\rho}\p{E + P}
+      \end{bmatrix}
+    \]
+    where
+    \[
+      P = \p{\gamma - 1}\p{E - \frac{m^2}{2\rho}}
+    \]
+
+    In order to compute the Jacobian of $\v{f}$ I will first compute the partial derivatives of $P$.
+    \begin{align*}
+      P_{\rho} &= \p{\gamma - 1} \frac{m^2}{2 \rho^2} \\
+      P_m &= -\p{\gamma - 1}\frac{m}{\rho} \\
+      P_E &= \gamma - 1
+    \end{align*}
+    Now the Jacobian of $\v{f}$ can expressed as
+    \[
+      \v{f}'(\v{u}) =
+      \begin{bmatrix}
+        0 & 1 & 0 \\
+        -\frac{m^2}{\rho^2} + P_{\rho} & 2 \frac{m}{\rho} + P_m & P_E \\
+        P_{\rho} \frac{m}{\rho} - (E + P)\frac{m}{\rho^2} & P_m \frac{m}{\rho} + (E + P) \frac{1}{\rho} & \frac{m}{p}\p{1 + P_E}
+      \end{bmatrix}
+    \]
+    Simplifying this results in
+    \[
+      \v{f}'(\v{u}) =
+      \begin{bmatrix}
+        0 & 1 & 0 \\
+        \p{\gamma - 3} \frac{m^2}{2 \rho^2} & \p{3 - \gamma}\frac{m}{\rho} & \gamma - 1 \\
+        \p{\gamma - 1} \frac{m^3}{2 \rho^3} - \frac{m}{\rho} H & H - \p{\gamma - 1}\frac{m^2}{\rho^2}  & \gamma\frac{m}{p}
+      \end{bmatrix}
+    \]
+    where
+    \[
+      H = \frac{E + P}{\rho}.
+    \]
+    This can also be changed into primitive variables.
+    \[
+      \v{f}'(\v{u}) =
+      \begin{bmatrix}
+        0 & 1 & 0 \\
+        \p{\gamma - 3} \frac{u^2}{2} & \p{3 - \gamma}u & \gamma - 1 \\
+        \p{\gamma - 1} u^3 - u H & H - \p{\gamma - 1}u^2  & \gamma u
+      \end{bmatrix}
+    \]
+
+    Now in order to find the eigenvalues and eigenvectors of this matrix we
+    start by subtracting $\lambda I$ and solving
+    $\det(\v{f}'(\v{u}) - \lambda I) = 0$.
+    \begin{gather*}
+      \begin{vmatrix}
+        -\lambda & 1 & 0 \\
+        \p{\gamma - 3} \frac{u^2}{2} & \p{3 - \gamma}u - \lambda & \gamma - 1 \\
+        \p{\gamma - 1} u^3 - u H & H - \p{\gamma - 1}u^2  & \gamma u - \lambda
+      \end{vmatrix} \\
+      = -\lambda \p{\p{3 - \gamma}u - \lambda} \p{\gamma u - \lambda} + \p{\gamma - 1}\p{\p{\gamma - 1} u^3 - uH} - (\gamma - 3)\frac{u^2}{2}\p{\gamma u - \lambda} + \lambda \p{\gamma - 1} \p{H - (\gamma - 1)u^2}
+    \end{gather*}
+    I will separate out each of these terms as
+    \begin{align*}
+      a_1 &= -\lambda \p{\p{3 - \gamma}u - \lambda} \p{\gamma u - \lambda} \\
+      a_2 &= \p{\gamma - 1}\p{\p{\gamma - 1} u^3 - uH} \\
+      a_3 &= - (\gamma - 3)\frac{u^2}{2}\p{\gamma u - \lambda} \\
+      a_4 &= \lambda \p{\gamma - 1} \p{H - (\gamma - 1)u^2}
+    \end{align*}
+    so the determinant is $a_1 + a_2 + a_3 + a_4$.
+    Now I will simplify each of these terms
+    \begin{align*}
+      a_1 &=  -\lambda \p{\p{3 - \gamma}u - \lambda} \p{\gamma u - \lambda} \\
+      &= \p{\p{\gamma - 3}u\lambda + \lambda^2} \p{\gamma u - \lambda} \\
+      &= \p{\gamma - 3}\gamma u^2 \lambda - \p{\gamma - 3} u\lambda^2 + \gamma u \lambda^2 - \lambda^3 \\
+      &= \p{\gamma - 3}\gamma u^2 \lambda + 3u \lambda^2 - \lambda^3
+    \end{align*}
+    \begin{align*}
+      a_2 &= \p{\gamma - 1}\p{\p{\gamma - 1} u^3 - uH} \\
+      &= \p{\gamma - 1}^2 u^3 - \p{\gamma - 1}uH
+    \end{align*}
+    \begin{align*}
+      a_3 &= - (\gamma - 3)\frac{u^2}{2}\p{\gamma u - \lambda} \\
+      &= (\gamma - 3)\frac{u^2}{2}\lambda - (\gamma - 3)\gamma\frac{u^3}{2}
+    \end{align*}
+    \begin{align*}
+      a_4 &= \lambda \p{\gamma - 1} \p{H - (\gamma - 1)u^2} \\
+      &= \lambda  \p{\p{\gamma - 1}H - \p{\gamma - 1}^2u^2}
+    \end{align*}
+    Adding these all back together gives
+    \begin{align*}
+      a_1 + a_2 + a_3 + a_4 &= -\lambda^3 + 3u \lambda^2 \\
+      + \p{\p{\frac{1}{2} + \gamma}\p{\gamma - 3}u^2 + \p{\gamma - 1}H - \p{\gamma - 1}^2u^2}\lambda  - (\gamma - 2)\gamma\frac{u^3}{2} + \p{\gamma - 1}^2 u^3 - \p{\gamma - 1}uH
+    \end{align*}
+
+
+
+  \item % #1
+\end{enumerate}
+\end{document}
