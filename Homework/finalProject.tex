@@ -29,6 +29,10 @@ Final Project
     \[
       P = \p{\gamma - 1}\p{E - \frac{m^2}{2\rho}}
     \]
+    or
+    \[
+      E = \frac{P}{\gamma - 1} + \frac{\rho u^2}{2}
+    \]
 
     In order to compute the Jacobian of $\v{f}$ I will first compute the partial derivatives of $P$.
     \begin{align*}
@@ -51,12 +55,8 @@ Final Project
       \begin{bmatrix}
         0 & 1 & 0 \\
         \p{\gamma - 3} \frac{m^2}{2 \rho^2} & \p{3 - \gamma}\frac{m}{\rho} & \gamma - 1 \\
-        \p{\gamma - 1} \frac{m^3}{2 \rho^3} - \frac{m}{\rho} H & H - \p{\gamma - 1}\frac{m^2}{\rho^2}  & \gamma\frac{m}{p}
+        \p{\gamma - 1} \frac{m^3}{2 \rho^3} - m\frac{E + P}{\rho^2} & \frac{E + P}{\rho} - \p{\gamma - 1}\frac{m^2}{\rho^2}  & \gamma\frac{m}{p}
       \end{bmatrix}
-    \]
-    where
-    \[
-      H = \frac{E + P}{\rho}.
     \]
     This can also be changed into primitive variables.
     \[
@@ -64,7 +64,7 @@ Final Project
       \begin{bmatrix}
         0 & 1 & 0 \\
         \p{\gamma - 3} \frac{u^2}{2} & \p{3 - \gamma}u & \gamma - 1 \\
-        \p{\gamma - 1} u^3 - u H & H - \p{\gamma - 1}u^2  & \gamma u
+        \frac{1}{2}\p{\gamma - 2} u^3 - \frac{\gamma}{\gamma - 1}\frac{uP}{\rho} & \frac{\gamma}{\gamma - 1}\frac{P}{\rho} + \p{\frac{3}{2} - \gamma}u^2  & \gamma u
       \end{bmatrix}
     \]
 
@@ -72,19 +72,22 @@ Final Project
     start by subtracting $\lambda I$ and solving
     $\det(\v{f}'(\v{u}) - \lambda I) = 0$.
     \begin{gather*}
+      \v{f}'(\v{u}) =
       \begin{vmatrix}
         -\lambda & 1 & 0 \\
         \p{\gamma - 3} \frac{u^2}{2} & \p{3 - \gamma}u - \lambda & \gamma - 1 \\
-        \p{\gamma - 1} u^3 - u H & H - \p{\gamma - 1}u^2  & \gamma u - \lambda
+        \frac{1}{2}\p{\gamma - 2} u^3 - \frac{\gamma}{\gamma - 1}\frac{uP}{\rho} & \frac{\gamma}{\gamma - 1}\frac{P}{\rho} + \p{\frac{3}{2} - \gamma}u^2  & \gamma u - \lambda \\
       \end{vmatrix} \\
-      = -\lambda \p{\p{3 - \gamma}u - \lambda} \p{\gamma u - \lambda} + \p{\gamma - 1}\p{\p{\gamma - 1} u^3 - uH} - (\gamma - 3)\frac{u^2}{2}\p{\gamma u - \lambda} + \lambda \p{\gamma - 1} \p{H - (\gamma - 1)u^2}
+      = -\lambda \p{\p{3 - \gamma}u - \lambda} \p{\gamma u - \lambda} + \p{\gamma - 1}\p{\frac{1}{2}\p{\gamma - 2} u^3 - \frac{\gamma}{\gamma - 1}\frac{uP}{\rho}} \\
+      + \lambda \p{\gamma - 1} \p{\frac{\gamma}{\gamma - 1}\frac{P}{\rho} + \p{\frac{3}{2} - \gamma}u^2} - \p{\gamma - 3} \frac{u^2}{2}\p{\gamma u - \lambda}
+      %= -\lambda \p{\p{3 - \gamma}u - \lambda} \p{\gamma u - \lambda} + \p{\gamma - 1}\p{\p{\gamma - 1} u^3 - uH} - (\gamma - 3)\frac{u^2}{2}\p{\gamma u - \lambda} + \lambda \p{\gamma - 1} \p{H - (\gamma - 1)u^2}
     \end{gather*}
     I will separate out each of these terms as
     \begin{align*}
       a_1 &= -\lambda \p{\p{3 - \gamma}u - \lambda} \p{\gamma u - \lambda} \\
-      a_2 &= \p{\gamma - 1}\p{\p{\gamma - 1} u^3 - uH} \\
-      a_3 &= - (\gamma - 3)\frac{u^2}{2}\p{\gamma u - \lambda} \\
-      a_4 &= \lambda \p{\gamma - 1} \p{H - (\gamma - 1)u^2}
+      a_2 &= \p{\gamma - 1}\p{\frac{1}{2}\p{\gamma - 2} u^3 - \frac{\gamma}{\gamma - 1}\frac{uP}{\rho}} \\
+      a_3 &= \lambda \p{\gamma - 1} \p{\frac{\gamma}{\gamma - 1}\frac{P}{\rho} + \p{\frac{3}{2} - \gamma}u^2} \\
+      a_4 &= -\p{\gamma - 3} \frac{u^2}{2}\p{\gamma u - \lambda}
     \end{align*}
     so the determinant is $a_1 + a_2 + a_3 + a_4$.
     Now I will simplify each of these terms
@@ -95,24 +98,28 @@ Final Project
       &= \p{\gamma - 3}\gamma u^2 \lambda + 3u \lambda^2 - \lambda^3
     \end{align*}
     \begin{align*}
-      a_2 &= \p{\gamma - 1}\p{\p{\gamma - 1} u^3 - uH} \\
-      &= \p{\gamma - 1}^2 u^3 - \p{\gamma - 1}uH
+      a_2 &= \p{\gamma - 1}\p{\frac{1}{2}\p{\gamma - 2} u^3 - \frac{\gamma}{\gamma - 1}\frac{uP}{\rho}} \\
+      &= \frac{1}{2}\p{\gamma - 1}\p{\gamma - 2} u^3 - \gamma\frac{uP}{\rho}
     \end{align*}
     \begin{align*}
-      a_3 &= - (\gamma - 3)\frac{u^2}{2}\p{\gamma u - \lambda} \\
-      &= (\gamma - 3)\frac{u^2}{2}\lambda - (\gamma - 3)\gamma\frac{u^3}{2}
+      a_3 &= \lambda \p{\gamma - 1} \p{\frac{\gamma}{\gamma - 1}\frac{P}{\rho} + \p{\frac{3}{2} - \gamma}u^2} \\
+      &= \lambda \p{\gamma\frac{P}{\rho} +\p{\gamma - 1}\p{\frac{3}{2} - \gamma}u^2}
     \end{align*}
     \begin{align*}
-      a_4 &= \lambda \p{\gamma - 1} \p{H - (\gamma - 1)u^2} \\
-      &= \lambda  \p{\p{\gamma - 1}H - \p{\gamma - 1}^2u^2}
+      a_4 &= -\p{\gamma - 3} \frac{u^2}{2}\p{\gamma u - \lambda} \\
+      &= \lambda\p{\gamma - 3} \frac{u^2}{2} - \gamma \p{\gamma - 3}\frac{u^3}{2} \\
     \end{align*}
     Adding these all back together gives
+    \begin{gather*}
+      a_1 + a_2 + a_3 + a_4 = -\lambda^3 + 3u \lambda^2 \\
+      + \p{\gamma\frac{P}{\rho} +\p{\gamma - 1}\p{\frac{3}{2} - \gamma}u^2 + \p{\gamma - 3}\gamma \frac{u^2}{2}}\lambda + \gamma \p{\gamma - 3}\frac{u^3}{2} + \frac{1}{2}\p{\gamma - 1}\p{\gamma - 2} u^3 - \gamma\frac{uP}{\rho}
+    \end{gather*}
+    Now I will simplify each of the coefficients of $\lambda$.
     \begin{align*}
-      a_1 + a_2 + a_3 + a_4 &= -\lambda^3 + 3u \lambda^2 \\
-      + \p{\p{\frac{1}{2} + \gamma}\p{\gamma - 3}u^2 + \p{\gamma - 1}H - \p{\gamma - 1}^2u^2}\lambda  - (\gamma - 2)\gamma\frac{u^3}{2} + \p{\gamma - 1}^2 u^3 - \p{\gamma - 1}uH
+      &\gamma\frac{P}{\rho} +\p{\gamma - 1}\p{\frac{3}{2} - \gamma}u^2 + \p{\gamma - 3}\gamma \frac{u^2}{2} \\
+      &= \gamma\frac{P}{\rho} +\p{\p{\gamma - 1}\p{\frac{3}{2} - \gamma} + \p{\gamma - 3}\frac{\gamma}{2} }u^2 \\
+      &= \gamma\frac{P}{\rho} +\p{-\gamma^2 + \frac{5}{2}\gamma - \frac{3}{2} + \frac{1}{2}\gamma^2 - \frac{3}{2}\gamma}u^2 \\
     \end{align*}
-
-
 
   \item % #1
 \end{enumerate}
