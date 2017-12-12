@@ -1,12 +1,12 @@
-function [L] = muscl3System(u, f, deltaX)
-    nGridCells = length(u);
-    L = zeros(nGridCells, 1);
+function [L] = muscl3System(w, f, deltaX)
+    [n, nGridCells] = size(w);
+    L = zeros(n, nGridCells);
     nu = 1/deltaX;
 
     boundaryConditions = 'zeroFlux';
 
-    % flux array, F(i) is flux at i + 1/2 interface
-    F = zeros(nGridCells,1);
+    % flux array, F(:, i) is flux at i + 1/2 interface
+    F = zeros(n, nGridCells);
 
     % compute fluxes at boundaries
     for j = 1:nGridCells
