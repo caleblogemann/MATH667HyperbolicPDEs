@@ -1,7 +1,8 @@
-function [L] = muscl3System(w, f, deltaX, RFunc, LambdaFunc)
+function [L] = muscl3System(w, f, deltaX, deltaT, RFunc)
     [n, nGridCells] = size(w);
     L = zeros(n, nGridCells);
     nu = 1/deltaX;
+    a = deltaX/(2*deltaT);
 
     boundaryConditions = 'zeroFlux';
 
@@ -45,7 +46,6 @@ function [L] = muscl3System(w, f, deltaX, RFunc, LambdaFunc)
         % reference solution
         wtilde = 0.5*(wj + wjp1);
         R = RFunc(wtilde);
-        Lambda = LambdaFunc(wtilde);
 
         vjm1 = R\wjm1;
         vj = R\wj;
@@ -57,19 +57,19 @@ function [L] = muscl3System(w, f, deltaX, RFunc, LambdaFunc)
         vtilde = vminus - vj;
         vdoubletilde = vplus + vjp1;
 
-        vtildemod = minmod3(vtilde, vjp1 - vj, vj - vjm1);
-        vdoubletildemod = minmod3(vdoubletilde, vjp2 - vjp1, vjp1 - vj);
+        vtildemod = minmod3System(vtilde, vjp1 - vj, vj - vjm1);
+        vdoubletildemod = minmod3System(vdoubletilde, vjp2 - vjp1, vjp1 - vj);
 
         vminusmod = vj + vtildemod;
         vplusmod = vjp1 - vdoubletildemod;
 
         wminus = R*vminusmod;
         wplus = R*vplusmod;
+        w1 = wminus - wj;
+        w2 = wplus - wj;
 
-        v1 = vminusmod - vj;
-        v2 = vplusmod - vj;
-
-        F(j) = f(vj + minmod(v1, v2));
+        %F(:,j) = f(wj + minmodSystem(w1,w2));
+        F(:,j) = a*(wminus - wplus) + 0.5*(f(wminus) + f(wplus));
     end
 
     % update solution
@@ -84,6 +84,6 @@ function [L] = muscl3System(w, f, deltaX, RFunc, LambdaFunc)
             end
         end
 
-        L(j) = nu*(F(jm1) - F(j));
+        L(:,j) = nu*(F(:,jm1) - F(:,j));
     end
 end
