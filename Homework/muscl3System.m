@@ -1,4 +1,4 @@
-function [L] = muscl3System(w, f, deltaX)
+function [L] = muscl3System(w, f, deltaX, RFunc, LambdaFunc)
     [n, nGridCells] = size(w);
     L = zeros(n, nGridCells);
     nu = 1/deltaX;
@@ -37,21 +37,39 @@ function [L] = muscl3System(w, f, deltaX)
                 jp2 = nGridCells;
             end
         end
+        wjm1 = w(:,jm1);
+        wj = w(:,j);
+        wjp1 = w(:,jp1);
+        wjp2 = w(:,jp2);
 
-        uminus = -(1/6)*u(jm1) + (5/6)*u(j) + (1/3)*u(jp1);
-        uplus = (1/3)*u(j) + (5/6)*u(jp1) - (1/6)*u(jp2);
-        utilde = uminus - u(j);
-        udoubletilde = uplus + u(jp1);
+        % reference solution
+        wtilde = 0.5*(wj + wjp1);
+        R = RFunc(wtilde);
+        Lambda = LambdaFunc(wtilde);
 
-        utildemod = minmod3(utilde, u(jp1) - u(j), u(j) - u(jm1));
-        udoubletildemod = minmod3(udoubletilde, u(jp2) - u(jp1), u(jp1) - u(j));
+        vjm1 = R\wjm1;
+        vj = R\wj;
+        vjp1 = R\wjp1;
+        vjp2 = R\wjp2;
 
-        uminusmod = u(j) + utildemod;
-        uplusmod = u(jp1) - udoubletildemod;
+        vminus = -(1/6)*vjm1 + (5/6)*vj + (1/3)*vjp1;
+        vplus = (1/3)*vj + (5/6)*vjp1 - (1/6)*vjp2;
+        vtilde = vminus - vj;
+        vdoubletilde = vplus + vjp1;
 
-        u1 = uminusmod - u(j);
-        u2 = uplusmod - u(j);
-        F(j) = f(u(j) + minmod(u1, u2));
+        vtildemod = minmod3(vtilde, vjp1 - vj, vj - vjm1);
+        vdoubletildemod = minmod3(vdoubletilde, vjp2 - vjp1, vjp1 - vj);
+
+        vminusmod = vj + vtildemod;
+        vplusmod = vjp1 - vdoubletildemod;
+
+        wminus = R*vminusmod;
+        wplus = R*vplusmod;
+
+        v1 = vminusmod - vj;
+        v2 = vplusmod - vj;
+
+        F(j) = f(vj + minmod(v1, v2));
     end
 
     % update solution
