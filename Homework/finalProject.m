@@ -45,11 +45,12 @@ deltaT = tFinal/nTimeSteps;
 
 t = 0:deltaT:tFinal;
 
-v0 = multByRInverse(w0);
+%v0 = multByRInverse(w0);
 
-rk3 = NumericalAnalysis.ODES.standardRK3Method;
 L = @(t, u) muscl3System(u, f, deltaX, deltaT, RFunc);
-sol = rk3.solveSystem(L, t, w0);
+%rk3 = NumericalAnalysis.ODES.standardRK3Method;
+%sol = rk3.solveSystem(L, t, w0);
+sol = rungeKutta3(L, t, w0);
 rho = sol(1,:,end);
 u = sol(2,:,end)./sol(1,:,end);
 p = (g - 1)*(sol(3,:,end) - 0.5*rho.*u.^2);
