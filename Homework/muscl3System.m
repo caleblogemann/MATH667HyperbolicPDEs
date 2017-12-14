@@ -65,8 +65,8 @@ function [L] = muscl3System(w, f, deltaX, deltaT, RFunc)
 
         wminus = R*vminusmod;
         wplus = R*vplusmod;
-        w1 = wminus - wj;
-        w2 = wplus - wj;
+        %w1 = wminus - wj;
+        %w2 = wplus - wj;
 
         %F(:,j) = f(wj + minmodSystem(w1,w2));
         F(:,j) = a*(wj - wjp1) + 0.5*(f(wminus) + f(wplus));

@@ -16,12 +16,12 @@ PR = 0.1;
 ER = energyFuncPrimitive(rhoR, uR, PR);
 
 w0func = @(x) [rhoL, mL, EL]'*(x <= 0) + [rhoR, mR, ER]'*(x > 0);
-a = -1;
-b = 1;
+a = -5;
+b = 5;
 fConservative = @(rho, m, E) [m; m^2/rho + pressureFunc(rho, m, E); m/rho*(E + pressureFunc(rho, m, E))];
 fPrimitive = @(rho, u, P) [rho*u; rho*u^2 + P; u*(energyFuncPrimitive(rho, u, P) + P)];
 f = @(w) fConservative(w(1), w(2), w(3));
-N = 1600;
+N = 1000;
 tFinal = 2.0;
 deltaX = (b - a)/N;
 x = linspace(a+0.5*deltaX, b-0.5*deltaX, N);
@@ -31,7 +31,7 @@ RPrimitive = @(rho, u, P) [1, 1, 1; u - sqrt(g*P/rho), u, u + sqrt(g*P/rho); g/(
 RConservative = @(rho, m, E) RPrimitive(rho, m/rho, pressureFunc(rho, m, E));
 RFunc = @(w) RConservative(w(1), w(2), w(3));
 multByR = @(w) RFunc(w)*w;
-multByRInverse = @(w) RFunc(w)\w;
+%multByRInverse = @(w) RFunc(w)\w;
 
 LambdaPrimitive = @(rho, u, P) [u - sqrt(g*P/rho), 0, 0; 0, u, 0; 0, 0, u + sqrt(g*P/rho)];
 LambdaConservative = @(rho, m, E) LambdaPrimitive(rho, m/rho, pressureFunc(rho, m, E));
