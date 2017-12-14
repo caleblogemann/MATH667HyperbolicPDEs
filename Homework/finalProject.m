@@ -47,7 +47,7 @@ t = 0:deltaT:tFinal;
 
 %v0 = multByRInverse(w0);
 
-L = @(t, u) muscl3System(u, f, deltaX, deltaT, RFunc);
+L = @(t, u) muscl3System(u, f, deltaX, deltaT, RFunc, LambdaFunc);
 %rk3 = NumericalAnalysis.ODES.standardRK3Method;
 %sol = rk3.solveSystem(L, t, w0);
 sol = rungeKutta3(L, t, w0);
